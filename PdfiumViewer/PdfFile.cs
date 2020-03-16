@@ -40,7 +40,7 @@ namespace PdfiumViewer
 
         public PdfBookmarkCollection Bookmarks { get; private set; }
 
-        public bool RenderPDFPageToDC(int pageNumber, IntPtr dc, int dpiX, int dpiY, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, NativeMethods.FPDF flags)
+        public bool RenderPDFPageToDC(int pageNumber, IntPtr dc, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, NativeMethods.FPDF flags)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -53,19 +53,16 @@ namespace PdfiumViewer
             return true;
         }
 
-        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int dpiX, int dpiY, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
+        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             using (var pageData = new PageData(_document, _form, pageNumber))
             {
-                if (renderFormFill)
-                    flags &= ~NativeMethods.FPDF.ANNOT;
-
                 NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
-
-                if (renderFormFill)
+                
+                if ((flags & NativeMethods.FPDF.ANNOT) != 0)
                     NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
             }
 

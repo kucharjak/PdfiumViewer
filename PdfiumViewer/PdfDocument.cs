@@ -216,7 +216,6 @@ namespace PdfiumViewer
                 bool success = _file.RenderPDFPageToDC(
                     page,
                     dc,
-                    (int)dpiX, (int)dpiY,
                     0, 0, bounds.Width, bounds.Height,
                     FlagsToFPDFFlags(flags)
                 );
@@ -332,11 +331,9 @@ namespace PdfiumViewer
                     bool success = _file.RenderPDFPageToBitmap(
                         page,
                         handle,
-                        (int)dpiX, (int)dpiY,
                         0, 0, width, height,
                         (int)rotate,
-                        FlagsToFPDFFlags(flags),
-                        (flags & PdfRenderFlags.Annotations) != 0
+                        FlagsToFPDFFlags(flags)
                     );
 
                     if (!success)
