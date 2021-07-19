@@ -61,9 +61,9 @@ namespace PdfiumViewer
             using (var pageData = new PageData(_document, _form, pageNumber))
             {
                 NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
-                
-                if ((flags & NativeMethods.FPDF.ANNOT) != 0)
-                    NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+
+                //if ((flags & NativeMethods.FPDF.ANNOT) != 0)
+                //NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
             }
 
             return true;
